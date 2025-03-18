@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as CANNON from './libs/cannon-es.js';
 import Player from './player.js';
 
 let scene, camera, renderer, player, keys = {};
