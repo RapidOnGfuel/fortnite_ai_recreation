@@ -1,6 +1,7 @@
 import * as THREE from 'three';
+import Player from './player.js';
 
-let scene, camera, renderer;
+let scene, camera, renderer, player, keys = {};
 
 function init() {
     // Create scene
@@ -27,18 +28,37 @@ function init() {
     ground.rotation.x = -Math.PI / 2;
     scene.add(ground);
 
+    // Initialize player
+    player = new Player(scene);
+
+    // Handle keyboard input
+    window.addEventListener('keydown', (event) => keys[event.key] = true);
+    window.addEventListener('keyup', (event) => keys[event.key] = false);
+
+    // Adjust canvas on window resize
+    window.addEventListener('resize', onWindowResize);
+
     animate();
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
     requestAnimationFrame(animate);
+
+    // Update player
+    player.update(keys);
+
+    // Update camera to follow player
+    camera.position.x = player.player.position.x;
+    camera.position.z = player.player.position.z + 5;
+    camera.lookAt(player.player.position);
+
     renderer.render(scene, camera);
 }
-
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
 
 init();
