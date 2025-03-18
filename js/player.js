@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as CANNON from './libs/cannon-es.js';
 
 class Player {
     constructor(scene) {
